@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="FindGate">
+    <Fallback>
+      <CheckAiInfo max_count="1"
+                   ai_info="{gate_info}"
+                   confidence="0.800000"
+                   camera="0"
+                   min_count="1"
+                   classification="gate"/>
+      <SubTree ID="ForwardStrafeGateSearch"
+               _autoremap="true"/>
+      <CheckAiInfo max_count="1"
+                   ai_info="{gate_info}"
+                   confidence="0.800000"
+                   camera="0"
+                   min_count="1"
+                   classification="gate"/>
+    </Fallback>
+  </BehaviorTree>
+
+  <BehaviorTree ID="ForwardStrafeGateSearch">
+    <RetryUntilSuccessful num_attempts="3">
+      <Sequence>
+        <Script code="gate_try_counter:=0"/>
+        <RetryUntilSuccessful num_attempts="3">
+          <Sequence>
+            <Script code="gate_try_counter+=1"/>
+            <SubTree ID="GateStrafeSearchPattern"
+                     attempt_num="{gate_try_counter}"
+                     _autoremap="true"/>
+            <CheckAiInfo max_count="1"
+                         ai_info="{gate_info}"
+                         confidence="0.800000"
+                         camera="0"
+                         min_count="1"
+                         classification="gate"/>
+          </Sequence>
+        </RetryUntilSuccessful>
+      </Sequence>
+    </RetryUntilSuccessful>
+  </BehaviorTree>
+
+  <BehaviorTree ID="GateStrafeSearchPattern">
+    <Switch3 case_1="1"
+             case_2="2"
+             case_3="3"
+             variable="{attempt_num}">
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="-0.5"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"
+               _autoremap="true"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0.0"
+               positionY="1"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"
+               _autoremap="true"/>
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 positionX="0.0"
+                 positionY="-0.5"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 frame="1"
+                 _autoremap="true"/>
+        <SubTree ID="MoveSinglePose"
+                 positionX="1"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0"
+                 frame="1"
+                 _autoremap="true"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </Switch3>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
+    <SubTree ID="GateStrafeSearchPattern"
+             editable="true">
+      <input_port name="attempt_num"/>
+    </SubTree>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1"/>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>
