@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Sonia">
+    <include path="CoinFlip.xml"/>
     <include path="MoveSinglePose.xml"/>
     <include path="TrickShot.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
+        <Action ID="AIActivation">
+            <input_port name="activation_target" default="0" type="unsigned char">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+        </Action>
         <Action ID="AddPoseToTraj">
             <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="precision" default="0" type="int"/>
@@ -17,9 +21,30 @@
             <input_port name="orientationX" default="0.000000" type="float"/>
             <input_port name="positionX" default="0.000000" type="float"/>
         </Action>
+        <Action ID="AiActivation">
+            <input_port name="activation_target" default="0" type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+        </Action>
+        <Action ID="ControlSetMode">
+            <input_port name="set_mode" default="false" type="bool"/>
+        </Action>
+        <Action ID="DropperActionNode">
+            <input_port name="side" type="std::string"/>
+        </Action>
+        <Action ID="EnableDisableDVL">
+            <input_port name="dvl_input" default="true" type="bool"/>
+        </Action>
+        <Action ID="GetAiInfo">
+            <input_port name="max_count" default="1" type="int"/>
+            <output_port name="ai_info" type="AiDetectionArray"/>
+            <input_port name="confidence" default="0.800000" type="float"/>
+            <input_port name="camera" default="0" type="int">0: Front, 1: Bottom</input_port>
+            <input_port name="min_count" default="1" type="int"/>
+            <input_port name="classification" type="std::string"/>
+        </Action>
         <Action ID="InitTraj">
             <output_port name="trajectory" type="Trajectory"/>
         </Action>
+        <Condition ID="MissionSwitchStatus"/>
         <SubTree ID="MoveSinglePose" editable="true">
             <input_port name="positionX" default="0.0"/>
             <input_port name="positionY" default="0.0"/>
@@ -36,6 +61,7 @@
         <SubTree ID="SinglePose" editable="true">
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
+        <Action ID="TareDepth"/>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>
         </Action>
