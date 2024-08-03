@@ -3,12 +3,23 @@
   <BehaviorTree ID="BuoyCircle">
     <Sequence>
       <InitTraj trajectory="{traj}"/>
-      <Repeat num_cycles="32">
+      <AddPoseToTraj trajectory="{traj}"
+                     precision="0"
+                     speed="0"
+                     frame="1"
+                     orientationZ="15"
+                     longRotation="false"
+                     positionZ="0.000000"
+                     positionY="0"
+                     orientationY="0.000000"
+                     orientationX="0.000000"
+                     positionX="0.000000"/>
+      <Repeat num_cycles="12">
         <AddPoseToTraj trajectory="{traj}"
                        precision="0"
                        speed="0"
                        frame="1"
-                       orientationZ="11.25"
+                       orientationZ="30"
                        longRotation="false"
                        positionZ="0.000000"
                        positionY="-1"
@@ -16,6 +27,17 @@
                        orientationX="0.000000"
                        positionX="0.000000"/>
       </Repeat>
+      <AddPoseToTraj trajectory="{traj}"
+                     precision="0"
+                     speed="0"
+                     frame="1"
+                     orientationZ="-15"
+                     longRotation="false"
+                     positionZ="0.000000"
+                     positionY="0"
+                     orientationY="0.000000"
+                     orientationX="0.000000"
+                     positionX="0.000000"/>
       <SendTrajToPlanner trajectory="{traj}"
                          interpolation="0"/>
       <WaitTargetReached timeout="5"/>
