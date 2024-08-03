@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Sonia">
     <include path="AI_Control.xml"/>
+    <include path="Buoy.xml"/>
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
