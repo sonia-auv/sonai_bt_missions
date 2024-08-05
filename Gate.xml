@@ -10,12 +10,6 @@
                    classification="gate"/>
       <SubTree ID="ForwardStrafeGateSearch"
                _autoremap="true"/>
-      <CheckAiInfo max_count="1"
-                   ai_info="{gate_info}"
-                   confidence="0.800000"
-                   camera="0"
-                   min_count="1"
-                   classification="gate"/>
     </Fallback>
   </BehaviorTree>
 
@@ -39,6 +33,19 @@
         </RetryUntilSuccessful>
       </Sequence>
     </RetryUntilSuccessful>
+  </BehaviorTree>
+
+  <BehaviorTree ID="GateAlignTrans">
+    <IfThenElse>
+      <SubTree ID="FindGate"
+               _autoremap="true"/>
+      <SubTree ID="TransAlign"
+               detection_object="{gate_info}"
+               target_x="300"
+               target_y="200"
+               error_margin="0.05"
+               _autoremap="true"/>
+    </IfThenElse>
   </BehaviorTree>
 
   <BehaviorTree ID="GateStrafeSearchPattern">
@@ -128,6 +135,16 @@
                   default="0.0"/>
       <input_port name="frame"
                   default="1"/>
+    </SubTree>
+    <SubTree ID="TransAlign"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="target_y"
+                  default="200"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
     </SubTree>
   </TreeNodesModel>
 

@@ -5,6 +5,7 @@
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
+    <include path="TransAlign.xml"/>
     <include path="TrickShot.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
@@ -86,6 +87,12 @@
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
         <Action ID="TareDepth"/>
+        <SubTree ID="TransAlign" editable="true">
+            <input_port name="detection_object"/>
+            <input_port name="target_x" default="300"/>
+            <input_port name="target_y" default="200"/>
+            <input_port name="error_margin" default="0.05"/>
+        </SubTree>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>
         </Action>
