@@ -5,6 +5,7 @@
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
+    <include path="MoveToTarget.xml"/>
     <include path="TransAlign.xml"/>
     <include path="TrickShot.xml"/>
     <!-- Description of Node Models (used by Groot) -->
@@ -83,6 +84,10 @@
             <input_port name="orientationZ" default="0.0"/>
             <input_port name="frame" default="1"/>
         </SubTree>
+        <Action ID="MoveToTarget">
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="aiObj" type="AiDetection"/>
+        </Action>
         <Action ID="SendTrajToPlanner">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>
