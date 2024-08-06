@@ -55,6 +55,10 @@
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="true" type="bool"/>
         </Action>
+        <SubTree ID="ForwardStrafeGateSearch" editable="true">
+            <input_port name="ai_info"/>
+            <input_port name="classification"/>
+        </SubTree>
         <SubTree ID="GateStrafeSearchPattern" editable="true">
             <input_port name="attempt_num"/>
         </SubTree>
