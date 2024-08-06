@@ -4,13 +4,13 @@
     <Fallback>
       <CheckAiInfo max_count="1"
                    ai_info="{gate_info}"
-                   confidence="0.600000"
+                   confidence="0.800000"
                    camera="0"
                    min_count="1"
-                   classification="gate_rouge"/>
+                   classification="{classification}"/>
       <SubTree ID="ForwardStrafeGateSearch"
                ai_info="{gate_info}"
-               classification="gate_rouge"
+               classification="{classification}"
                _autoremap="true"/>
     </Fallback>
   </BehaviorTree>
@@ -28,7 +28,7 @@
             <RetryUntilSuccessful num_attempts="3">
               <CheckAiInfo max_count="1"
                            ai_info="{ai_info}"
-                           confidence="0.600000"
+                           confidence="0.800000"
                            camera="0"
                            min_count="1"
                            classification="{classification}"/>
@@ -39,10 +39,17 @@
     </RetryUntilSuccessful>
   </BehaviorTree>
 
+  <BehaviorTree ID="GateAlignAngle">
+    <SubTree ID="AngleAlign"
+             classification="gate_rouge"
+             _autoremap="true"/>
+  </BehaviorTree>
+
   <BehaviorTree ID="GateAlignTrans">
     <IfThenElse>
       <RetryUntilSuccessful num_attempts="3">
         <SubTree ID="FindGate"
+                 classification="gate_rouge"
                  _autoremap="true"/>
       </RetryUntilSuccessful>
       <SubTree ID="TransAlign"
@@ -104,6 +111,10 @@
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <SubTree ID="AngleAlign"
+             editable="true">
+      <input_port name="classification"/>
+    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -122,6 +133,10 @@
       <input_port name="classification"
                   type="std::string"/>
     </Condition>
+    <SubTree ID="FindGate"
+             editable="true">
+      <input_port name="classification"/>
+    </SubTree>
     <SubTree ID="ForwardStrafeGateSearch"
              editable="true">
       <input_port name="ai_info"/>

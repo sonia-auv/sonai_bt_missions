@@ -32,7 +32,7 @@
       <inout_port name="traj"
                   type="Trajectory"/>
       <input_port name="detection_object"
-                  type="AiDetection"/>
+                  type="AiDetectionArray"/>
     </Condition>
     <Action ID="InitTraj">
       <output_port name="trajectory"
