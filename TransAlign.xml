@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="TransAlign">
+    <Sequence>
+      <InitTraj trajectory="{transAlign}"/>
+      <Fallback>
+        <CheckTranslationAlign error_margin="{error_margin}"
+                               target_y="{target_y}"
+                               target_x="{target_x}"
+                               traj="{transAlign}"
+                               detection_object="{detection_object}"/>
+        <Sequence>
+          <SendTrajToPlanner trajectory="{transAlign}"
+                             interpolation="0"/>
+          <WaitTargetReached timeout="5"/>
+        </Sequence>
+      </Fallback>
+      <Script code="transAlign=&quot;&quot;"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="CheckTranslationAlign">
+      <input_port name="error_margin"
+                  default="0.050000"
+                  type="float">percentage of error off the target (0-1)</input_port>
+      <input_port name="target_y"
+                  type="int"/>
+      <input_port name="target_x"
+                  type="int"/>
+      <inout_port name="traj"
+                  type="Trajectory"/>
+      <input_port name="detection_object"
+                  type="AiDetectionArray"/>
+    </Condition>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Action ID="SendTrajToPlanner">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>

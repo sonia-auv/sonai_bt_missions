@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4" project_name="Sonia">
     <include path="AI_Control.xml"/>
+    <include path="Align.xml"/>
     <include path="Buoy.xml"/>
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
+    <include path="MoveToTarget.xml"/>
     <include path="TrickShot.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
@@ -24,6 +26,9 @@
         <Action ID="AiActivation">
             <input_port name="activation_target" default="0" type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
         </Action>
+        <SubTree ID="AngleAlign" editable="true">
+            <input_port name="classification"/>
+        </SubTree>
         <Condition ID="CheckAiInfo">
             <input_port name="max_count" default="1" type="int"/>
             <output_port name="ai_info" type="AiDetectionArray"/>
@@ -31,6 +36,19 @@
             <input_port name="camera" default="0" type="int">0: Front, 1: Bottom</input_port>
             <input_port name="min_count" default="1" type="int"/>
             <input_port name="classification" type="std::string"/>
+        </Condition>
+        <Condition ID="CheckRotationAlign">
+            <input_port name="maxRatio" type="float"/>
+            <input_port name="minRatio" type="float"/>
+            <output_port name="status" type="int">0: angle too small, 1: angle ok</output_port>
+            <input_port name="aiObj" type="AiDetection"/>
+        </Condition>
+        <Condition ID="CheckTranslationAlign">
+            <input_port name="error_margin" default="0.050000" type="float">percentage of error off the target (0-1)</input_port>
+            <input_port name="target_y" type="int"/>
+            <input_port name="target_x" type="int"/>
+            <inout_port name="traj" type="Trajectory"/>
+            <input_port name="detection_object" type="AiDetectionArray"/>
         </Condition>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
@@ -41,6 +59,13 @@
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="true" type="bool"/>
         </Action>
+        <SubTree ID="FindGate" editable="true">
+            <input_port name="classification"/>
+        </SubTree>
+        <SubTree ID="ForwardStrafeGateSearch" editable="true">
+            <input_port name="ai_info"/>
+            <input_port name="classification"/>
+        </SubTree>
         <SubTree ID="GateStrafeSearchPattern" editable="true">
             <input_port name="attempt_num"/>
         </SubTree>
@@ -51,6 +76,12 @@
             <input_port name="camera" default="0" type="int">0: Front, 1: Bottom</input_port>
             <input_port name="min_count" default="1" type="int"/>
             <input_port name="classification" type="std::string"/>
+        </Action>
+        <Action ID="GetAngle">
+            <input_port name="error_margin" default="0.100000" type="float"/>
+            <input_port name="ideal_ratio" type="float"/>
+            <output_port name="detected_angle" type="float"/>
+            <input_port name="aiObj" type="AiDetection"/>
         </Action>
         <Action ID="InitTraj">
             <output_port name="trajectory" type="Trajectory"/>
@@ -65,6 +96,10 @@
             <input_port name="orientationZ" default="0.0"/>
             <input_port name="frame" default="1"/>
         </SubTree>
+        <Action ID="MoveToTarget">
+            <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="aiObj" type="AiDetectionArray"/>
+        </Action>
         <Action ID="SendTrajToPlanner">
             <input_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>
@@ -73,6 +108,12 @@
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
         <Action ID="TareDepth"/>
+        <SubTree ID="TransAlign" editable="true">
+            <input_port name="detection_object"/>
+            <input_port name="target_x" default="300"/>
+            <input_port name="target_y" default="200"/>
+            <input_port name="error_margin" default="0.05"/>
+        </SubTree>
         <Action ID="WaitTargetReached">
             <input_port name="timeout" default="5" type="int"/>
         </Action>

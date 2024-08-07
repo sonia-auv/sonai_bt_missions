@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="MoveToTarget">
+    <Sequence>
+      <AiActivation activation_target="1"/>
+      <Sleep msec="5"/>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{buoy}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="buoy"/>
+      </RetryUntilSuccessful>
+      <InitTraj trajectory="{traj}"/>
+      <MoveToTarget trajectory="{traj}"
+                    aiObj="{buoy}"/>
+      <SendTrajToPlanner trajectory="{traj}"
+                         interpolation="0"/>
+      <AlwaysSuccess/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AiActivation">
+      <input_port name="activation_target"
+                  default="0"
+                  type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+    </Action>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Action ID="MoveToTarget">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="aiObj"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="SendTrajToPlanner">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>
