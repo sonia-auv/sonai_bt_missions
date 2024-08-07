@@ -28,7 +28,14 @@
             <input_port name="min_count" type="int" default="1"/>
             <input_port name="classification" type="std::string"/>
         </Condition>
-        <Condition ID="CheckTranslationAlign">
+        <Condition ID="CheckTranslationXYAlign">
+            <input_port name="error_margin" type="float" default="0.050000">percentage of error off the target (0-1)</input_port>
+            <input_port name="target_y" type="int"/>
+            <input_port name="target_x" type="int"/>
+            <inout_port name="traj" type="Trajectory"/>
+            <input_port name="detection_object" type="AiDetection"/>
+        </Condition>
+        <Condition ID="CheckTranslationYZAlign">
             <input_port name="error_margin" type="float" default="0.050000">percentage of error off the target (0-1)</input_port>
             <input_port name="target_y" type="int"/>
             <input_port name="target_x" type="int"/>
@@ -49,7 +56,7 @@
         <Action ID="GetAngle">
             <input_port name="error_margin" type="float" default="0.100000"/>
             <input_port name="ideal_ratio" type="float"/>
-            <output_port name="detected_angle" type="int"/>
+            <output_port name="detected_angle" type="float"/>
             <input_port name="aiObj" type="AiDetectionArray"/>
         </Action>
         <Action ID="GetTorpedoTarget">
@@ -63,7 +70,7 @@
         <Condition ID="MissionSwitchStatus"/>
         <Action ID="MoveToTarget">
             <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="aiObj" type="AiDetectionArray"/>
+            <input_port name="aiObj" type="AiDetection"/>
         </Action>
         <Action ID="SendTrajToPlanner">
             <input_port name="trajectory" type="Trajectory"/>
