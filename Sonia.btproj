@@ -8,6 +8,7 @@
     <include path="MoveSinglePose.xml"/>
     <include path="MoveToTarget.xml"/>
     <include path="TrickShot.xml"/>
+    <include path="missions.xml"/>
     <!-- Description of Node Models (used by Groot) -->
     <TreeNodesModel>
         <Action ID="AddPoseToTraj">
@@ -24,7 +25,7 @@
             <input_port name="positionX" default="0.000000" type="float"/>
         </Action>
         <Action ID="AiActivation">
-            <input_port name="activation_target" default="0" type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+            <input_port name="activation_target" default="0" type="unsigned char">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
         </Action>
         <SubTree ID="AngleAlign" editable="true">
             <input_port name="classification"/>

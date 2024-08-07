@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="boot_sequence">
+    <Sequence>
+      <EnableDisableDVL dvl_input="true"/>
+      <ControlSetMode set_mode="true"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="enable_mission">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="-1">
+        <MissionSwitchStatus/>
+      </RetryUntilSuccessful>
+      <SubTree ID="boot_sequence"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="ControlSetMode">
+      <input_port name="set_mode"
+                  default="false"
+                  type="bool"/>
+    </Action>
+    <Action ID="EnableDisableDVL">
+      <input_port name="dvl_input"
+                  default="true"
+                  type="bool"/>
+    </Action>
+    <Condition ID="MissionSwitchStatus"/>
+  </TreeNodesModel>
+
+</root>
