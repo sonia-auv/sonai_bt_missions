@@ -44,6 +44,25 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="FindBuoy">
+    <Sequence>
+      <CheckAiInfo max_count="1"
+                   ai_info="{buoy_arr}"
+                   confidence="0.800000"
+                   camera="0"
+                   min_count="1"
+                   classification="buoy"/>
+      <ExtractAiListItem aiObject="{buoyObj}"
+                         Index="0"
+                         array="{buoy_arr}"/>
+      <SubTree ID="TransAlign"
+               detection_object="{buoyObj}"
+               target_x="300"
+               target_y="100"
+               error_margin="0.05"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AddPoseToTraj">
@@ -80,6 +99,32 @@
                   default="0.000000"
                   type="float"/>
     </Action>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
+    <Action ID="ExtractAiListItem">
+      <output_port name="aiObject"
+                   type="AiDetection"/>
+      <input_port name="Index"
+                  type="int"/>
+      <input_port name="array"
+                  type="AiDetectionArray"/>
+    </Action>
     <Action ID="InitTraj">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -91,6 +136,16 @@
                   default="0"
                   type="int"/>
     </Action>
+    <SubTree ID="TransAlign"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="target_y"
+                  default="200"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+    </SubTree>
     <Action ID="WaitTargetReached">
       <input_port name="timeout"
                   default="5"

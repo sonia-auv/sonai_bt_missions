@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="Gate24">
+    <Sequence>
+      <AiActivation activation_target="1"/>
+      <SubTree ID="GateAlignTrans"
+               _autoremap="true"/>
+      <SubTree ID="GateAlignAngle"/>
+      <SubTree ID="GateAlignTrans"/>
+      <Sequence>
+        <InitTraj trajectory="{gate_traj}"/>
+        <MoveToTarget trajectory="{gate_traj}"
+                      aiObj="{gate_item}"/>
+        <SendTrajToPlanner trajectory="{gate_traj}"
+                           interpolation="0"/>
+        <WaitTargetReached timeout="5"/>
+      </Sequence>
+      <AiActivation activation_target="0"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Run24">
+    <Sequence>
+      <SubTree ID="enable_mission"/>
+      <SubTree ID="CoinFlip"/>
+      <SubTree ID="Gate24"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="1"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="0"
+               positionY="0.0"
+               positionZ="0.8"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="4"/>
+      <SubTree ID="TrickShotSingle"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="AiActivation">
+      <input_port name="activation_target"
+                  default="0"
+                  type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+    </Action>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1"/>
+    </SubTree>
+    <Action ID="MoveToTarget">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="aiObj"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="SendTrajToPlanner">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>
