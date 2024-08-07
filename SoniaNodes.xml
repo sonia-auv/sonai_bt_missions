@@ -1,5 +1,9 @@
 <root BTCPP_format="4">
     <TreeNodesModel>
+        <Action ID="ActuatorsAction">
+            <input_port name="side" type="std::string">port_side or starboard</input_port>
+            <input_port name="Actuator" type="int">0: Dropper, 1: Torpedo</input_port>
+        </Action>
         <Action ID="AddPoseToTraj">
             <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="precision" type="int" default="0"/>
@@ -34,9 +38,6 @@
         <Action ID="ControlSetMode">
             <input_port name="set_mode" type="bool" default="false"/>
         </Action>
-        <Action ID="DropperActionNode">
-            <input_port name="side" type="std::string">port_side or starboard</input_port>
-        </Action>
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" type="bool" default="true"/>
         </Action>
@@ -44,7 +45,7 @@
             <input_port name="error_margin" type="float" default="0.100000"/>
             <input_port name="ideal_ratio" type="float"/>
             <output_port name="detected_angle" type="float"/>
-            <input_port name="aiObj" type="AiDetection"/>
+            <input_port name="aiObj" type="AiDetectionArray"/>
         </Action>
         <Action ID="InitTraj">
             <output_port name="trajectory" type="Trajectory"/>
