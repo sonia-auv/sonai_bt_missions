@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
   <BehaviorTree ID="AiStartFront">
-    <AiActivation activation_target="1"/>
+    <Sequence>
+      <Sleep msec="500"/>
+      <AiActivation activation_target="1"/>
+    </Sequence>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
@@ -9,7 +12,7 @@
     <Action ID="AiActivation">
       <input_port name="activation_target"
                   default="0"
-                  type="unsigned char">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
+                  type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
     </Action>
   </TreeNodesModel>
 

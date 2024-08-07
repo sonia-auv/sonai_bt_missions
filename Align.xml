@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="AngleAlign">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="3">
+        <GetAiInfo max_count="1"
+                   ai_info="{aiObj}"
+                   confidence="0.800000"
+                   camera="0"
+                   min_count="1"
+                   classification="{classification}"/>
+      </RetryUntilSuccessful>
+      <IfThenElse>
+        <GetAngle error_margin="0.100000"
+                  ideal_ratio="1"
+                  detected_angle="{angle1}"
+                  aiObj="{aiObj}"/>
+        <AlwaysSuccess/>
+        <Sequence>
+          <SubTree ID="MoveSinglePose"
+                   positionX="0.0"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="5"
+                   frame="1"
+                   _autoremap="true"/>
+          <RetryUntilSuccessful num_attempts="3">
+            <GetAiInfo max_count="1"
+                       ai_info="{aiObj}"
+                       confidence="0.800000"
+                       camera="0"
+                       min_count="1"
+                       classification="{classification}"/>
+          </RetryUntilSuccessful>
+          <GetAngle error_margin="0.100000"
+                    ideal_ratio="1"
+                    detected_angle="{angle2}"
+                    aiObj="{aiObj}"/>
+          <IfThenElse>
+            <ScriptCondition code="angle1&lt;angle2"/>
+            <Sequence>
+              <Script code="angle1 = angle1 + 5"/>
+              <SubTree ID="MoveSinglePose"
+                       positionX="0.0"
+                       positionY="0.0"
+                       positionZ="0.0"
+                       orientationX="0.0"
+                       orientationY="0.0"
+                       orientationZ="{angle1}"
+                       frame="1"
+                       _autoremap="true"/>
+            </Sequence>
+            <SubTree ID="MoveSinglePose"
+                     positionX="0.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="{angle2}"
+                     frame="1"
+                     _autoremap="true"/>
+          </IfThenElse>
+        </Sequence>
+      </IfThenElse>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="TransAlign">
+    <Sequence>
+      <InitTraj trajectory="{transAlign}"/>
+      <Fallback>
+        <CheckTranslationAlign error_margin="{error_margin}"
+                               target_y="{target_y}"
+                               target_x="{target_x}"
+                               traj="{transAlign}"
+                               detection_object="{detection_object}"/>
+        <Sequence>
+          <SendTrajToPlanner trajectory="{transAlign}"
+                             interpolation="0"/>
+          <WaitTargetReached timeout="5"/>
+        </Sequence>
+      </Fallback>
+      <Script code="transAlign=&quot;&quot;"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="CheckTranslationAlign">
+      <input_port name="error_margin"
+                  default="0.050000"
+                  type="float">percentage of error off the target (0-1)</input_port>
+      <input_port name="target_y"
+                  type="int"/>
+      <input_port name="target_x"
+                  type="int"/>
+      <inout_port name="traj"
+                  type="Trajectory"/>
+      <input_port name="detection_object"
+                  type="AiDetectionArray"/>
+    </Condition>
+    <Action ID="GetAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Action>
+    <Action ID="GetAngle">
+      <input_port name="error_margin"
+                  default="0.100000"
+                  type="float"/>
+      <input_port name="ideal_ratio"
+                  type="float"/>
+      <output_port name="detected_angle"
+                   type="float"/>
+      <input_port name="aiObj"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1"/>
+    </SubTree>
+    <Action ID="SendTrajToPlanner">
+      <input_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>
