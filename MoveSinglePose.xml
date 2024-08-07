@@ -16,7 +16,7 @@
                      positionX="{positionX}"/>
       <SendTrajToPlanner trajectory="{traj}"
                          interpolation="0"/>
-      <WaitTargetReached timeout="5"/>
+      <WaitTargetReached timeout="10"/>
       <Script code="traj=&quot;&quot;"/>
     </Sequence>
   </BehaviorTree>
