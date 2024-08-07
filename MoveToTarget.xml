@@ -3,7 +3,7 @@
   <BehaviorTree ID="MoveToTarget">
     <Sequence>
       <AiActivation activation_target="1"/>
-      <Sleep msec="5"/>
+      <Sleep msec="5000"/>
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
                      ai_info="{buoy}"

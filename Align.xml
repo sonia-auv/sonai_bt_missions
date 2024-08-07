@@ -34,34 +34,35 @@
                          min_count="1"
                          classification="{classification}"/>
           </RetryUntilSuccessful>
-          <GetAngle error_margin="0.100000"
-                    ideal_ratio="1"
-                    detected_angle="{angle2}"
-                    aiObj="{aiObj}"/>
-          <IfThenElse>
-            <ScriptCondition code="angle1&lt;angle2"/>
-            <Sequence>
-              <Script code="angle1 = angle1 + 5"/>
+          <Fallback>
+            <GetAngle error_margin="0.100000"
+                      ideal_ratio="1"
+                      detected_angle="{angle2}"
+                      aiObj="{aiObj}"/>
+            <IfThenElse>
+              <ScriptCondition code="angle1&gt;angle2"/>
+              <Sequence>
+                <SubTree ID="MoveSinglePose"
+                         positionX="0.0"
+                         positionY="0.0"
+                         positionZ="0.0"
+                         orientationX="0.0"
+                         orientationY="0.0"
+                         orientationZ="{angle1}"
+                         frame="1"
+                         _autoremap="true"/>
+              </Sequence>
               <SubTree ID="MoveSinglePose"
                        positionX="0.0"
                        positionY="0.0"
                        positionZ="0.0"
                        orientationX="0.0"
                        orientationY="0.0"
-                       orientationZ="{angle1}"
+                       orientationZ="{angle2}"
                        frame="1"
                        _autoremap="true"/>
-            </Sequence>
-            <SubTree ID="MoveSinglePose"
-                     positionX="0.0"
-                     positionY="0.0"
-                     positionZ="0.0"
-                     orientationX="0.0"
-                     orientationY="0.0"
-                     orientationZ="{angle2}"
-                     frame="1"
-                     _autoremap="true"/>
-          </IfThenElse>
+            </IfThenElse>
+          </Fallback>
         </Sequence>
       </IfThenElse>
     </Sequence>
@@ -126,7 +127,7 @@
       <input_port name="ideal_ratio"
                   type="float"/>
       <output_port name="detected_angle"
-                   type="float"/>
+                   type="int"/>
       <input_port name="aiObj"
                   type="AiDetectionArray"/>
     </Action>

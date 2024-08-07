@@ -60,7 +60,7 @@
                  detection_object="{gate_item}"
                  target_x="300"
                  target_y="150"
-                 error_margin="0.10"
+                 error_margin="0.05"
                  _autoremap="true"/>
       </Sequence>
       <AlwaysFailure/>

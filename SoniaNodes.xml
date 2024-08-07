@@ -49,7 +49,7 @@
         <Action ID="GetAngle">
             <input_port name="error_margin" type="float" default="0.100000"/>
             <input_port name="ideal_ratio" type="float"/>
-            <output_port name="detected_angle" type="float"/>
+            <output_port name="detected_angle" type="int"/>
             <input_port name="aiObj" type="AiDetectionArray"/>
         </Action>
         <Action ID="GetTorpedoTarget">
