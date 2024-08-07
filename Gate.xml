@@ -52,12 +52,17 @@
                  classification="gate_rouge"
                  _autoremap="true"/>
       </RetryUntilSuccessful>
-      <SubTree ID="TransAlign"
-               detection_object="{gate_info}"
-               target_x="300"
-               target_y="150"
-               error_margin="0.10"
-               _autoremap="true"/>
+      <Sequence>
+        <ExtractAiListItem aiObject="{gate_item}"
+                           Index="0"
+                           array="{gate_info}"/>
+        <SubTree ID="TransAlign"
+                 detection_object="{gate_item}"
+                 target_x="300"
+                 target_y="150"
+                 error_margin="0.10"
+                 _autoremap="true"/>
+      </Sequence>
       <AlwaysFailure/>
     </IfThenElse>
   </BehaviorTree>
@@ -133,6 +138,14 @@
       <input_port name="classification"
                   type="std::string"/>
     </Condition>
+    <Action ID="ExtractAiListItem">
+      <output_port name="aiObject"
+                   type="AiDetection"/>
+      <input_port name="Index"
+                  type="int"/>
+      <input_port name="array"
+                  type="AiDetectionArray"/>
+    </Action>
     <SubTree ID="FindGate"
              editable="true">
       <input_port name="classification"/>

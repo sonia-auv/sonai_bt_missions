@@ -117,7 +117,7 @@
       <inout_port name="traj"
                   type="Trajectory"/>
       <input_port name="detection_object"
-                  type="AiDetectionArray"/>
+                  type="AiDetection"/>
     </Condition>
     <Action ID="GetAngle">
       <input_port name="error_margin"

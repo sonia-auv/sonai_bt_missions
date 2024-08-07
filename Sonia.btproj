@@ -7,6 +7,7 @@
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
     <include path="MoveToTarget.xml"/>
+    <include path="Torpedoes.xml"/>
     <include path="TrickShot.xml"/>
     <include path="missions.xml"/>
     <!-- Description of Node Models (used by Groot) -->
@@ -53,7 +54,7 @@
             <input_port name="target_y" type="int"/>
             <input_port name="target_x" type="int"/>
             <inout_port name="traj" type="Trajectory"/>
-            <input_port name="detection_object" type="AiDetectionArray"/>
+            <input_port name="detection_object" type="AiDetection"/>
         </Condition>
         <Action ID="ControlSetMode">
             <input_port name="set_mode" default="false" type="bool"/>
@@ -63,6 +64,11 @@
         </Action>
         <Action ID="EnableDisableDVL">
             <input_port name="dvl_input" default="true" type="bool"/>
+        </Action>
+        <Action ID="ExtractAiListItem">
+            <output_port name="aiObject" type="AiDetection"/>
+            <input_port name="Index" type="int"/>
+            <input_port name="array" type="AiDetectionArray"/>
         </Action>
         <SubTree ID="FindGate" editable="true">
             <input_port name="classification"/>
@@ -79,6 +85,11 @@
             <input_port name="ideal_ratio" type="float"/>
             <output_port name="detected_angle" type="float"/>
             <input_port name="aiObj" type="AiDetectionArray"/>
+        </Action>
+        <Action ID="GetTorpedoTarget">
+            <output_port name="selected_target" type="AiDetection"/>
+            <input_port name="size" type="int">0: smallest, 3: biggest</input_port>
+            <input_port name="torpedo_objs" type="AiDetectionArray"/>
         </Action>
         <Action ID="InitTraj">
             <output_port name="trajectory" type="Trajectory"/>
