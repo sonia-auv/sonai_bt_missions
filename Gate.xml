@@ -50,13 +50,13 @@
       <RetryUntilSuccessful num_attempts="3">
         <SubTree ID="FindGate"
                  classification="gate_rouge"
-                 _autoremap="true"/>
+                 _autoremap="false"/>
       </RetryUntilSuccessful>
       <Sequence>
         <ExtractAiListItem aiObject="{gate_item}"
                            Index="0"
                            array="{gate_info}"/>
-        <SubTree ID="TransAlign"
+        <SubTree ID="TransAlignYZ"
                  detection_object="{gate_item}"
                  target_x="300"
                  target_y="150"
@@ -176,7 +176,7 @@
       <input_port name="frame"
                   default="1"/>
     </SubTree>
-    <SubTree ID="TransAlign"
+    <SubTree ID="TransAlignYZ"
              editable="true">
       <input_port name="detection_object"/>
       <input_port name="target_x"

@@ -2,6 +2,7 @@
 <root BTCPP_format="4" project_name="Sonia">
     <include path="AI_Control.xml"/>
     <include path="Align.xml"/>
+    <include path="Bin.xml"/>
     <include path="Buoy.xml"/>
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
@@ -127,7 +128,13 @@
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
         <Action ID="TareDepth"/>
-        <SubTree ID="TransAlign" editable="true">
+        <SubTree ID="TransAlignXY" editable="true">
+            <input_port name="detection_object"/>
+            <input_port name="target_x" default="300"/>
+            <input_port name="target_y" default="200"/>
+            <input_port name="error_margin" default="0.05"/>
+        </SubTree>
+        <SubTree ID="TransAlignYZ" editable="true">
             <input_port name="detection_object"/>
             <input_port name="target_x" default="300"/>
             <input_port name="target_y" default="200"/>
