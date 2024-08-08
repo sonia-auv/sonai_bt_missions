@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="BinAlignTrans">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{aiObj}"
+                     confidence="0.800000"
+                     camera="1"
+                     min_count="1"
+                     classification="bin_rouge"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{bin_item}"
+                           Index="0"
+                           array="{aiObj}"/>
+        <SubTree ID="TransAlignXY"
+                 detection_object="{bin_item}"
+                 target_x="300"
+                 target_y="200"
+                 error_margin="0.05"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
+    <Action ID="ExtractAiListItem">
+      <output_port name="aiObject"
+                   type="AiDetection"/>
+      <input_port name="Index"
+                  type="int"/>
+      <input_port name="array"
+                  type="AiDetectionArray"/>
+    </Action>
+    <SubTree ID="TransAlignXY"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="target_y"
+                  default="200"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>

@@ -55,10 +55,10 @@
       <ExtractAiListItem aiObject="{buoyObj}"
                          Index="0"
                          array="{buoy_arr}"/>
-      <SubTree ID="TransAlign"
+      <SubTree ID="TransAlignYZ"
                detection_object="{buoyObj}"
                target_x="300"
-               target_y="100"
+               target_y="200"
                error_margin="0.05"/>
     </Sequence>
   </BehaviorTree>
@@ -136,7 +136,7 @@
                   default="0"
                   type="int"/>
     </Action>
-    <SubTree ID="TransAlign"
+    <SubTree ID="TransAlignYZ"
              editable="true">
       <input_port name="detection_object"/>
       <input_port name="target_x"
