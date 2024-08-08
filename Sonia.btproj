@@ -8,6 +8,7 @@
     <include path="MoveSinglePose.xml"/>
     <include path="MoveToTarget.xml"/>
     <include path="Run24.xml"/>
+    <include path="Torpedoes.xml"/>
     <include path="TrickShot.xml"/>
     <include path="missions.xml"/>
     <!-- Description of Node Models (used by Groot) -->
@@ -32,6 +33,9 @@
         <Action ID="AiActivation">
             <input_port name="activation_target" default="0" type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
         </Action>
+        <SubTree ID="AlignSize" editable="true">
+            <input_port name="size" default="0"/>
+        </SubTree>
         <SubTree ID="AngleAlign" editable="true">
             <input_port name="classification"/>
         </SubTree>

@@ -70,7 +70,7 @@
         <Condition ID="MissionSwitchStatus"/>
         <Action ID="MoveToTarget">
             <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="aiObj" type="AiDetection"/>
+            <input_port name="aiObj" type="AiDetectionArray"/>
         </Action>
         <Action ID="SendTrajToPlanner">
             <input_port name="trajectory" type="Trajectory"/>

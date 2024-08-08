@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="AlignSmallest">
+  <BehaviorTree ID="AlignSize">
     <Sequence>
       <CheckAiInfo max_count="4"
-                   ai_info="{torp_list}"
+                   ai_info="{torp_target_list}"
                    confidence="0.800000"
                    camera="0"
                    min_count="1"
-                   classification="cible_torpille"/>
+                   classification="torpille_target"/>
       <GetTorpedoTarget selected_target="{torp_target}"
-                        size="0"
-                        torpedo_objs="{torp_list}"/>
+                        size="{size}"
+                        torpedo_objs="{torp_target_list}"/>
       <SubTree ID="TransAlign"
                detection_object="{torp_target}"
                target_x="300"
@@ -20,8 +20,53 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="AlignTorpFrame">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="3">
+        <CheckAiInfo max_count="1"
+                     ai_info="{torp_frame_arr}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="torpille"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{torp_frame}"
+                           Index="0"
+                           array="{torp_frame_arr}"/>
+        <SubTree ID="TransAlign"
+                 detection_object="{torp_frame}"
+                 target_x="300"
+                 target_y="200"
+                 error_margin="0.1"
+                 _autoremap="true"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
+  </BehaviorTree>
+
+  <BehaviorTree ID="TestTorpedoes">
+    <Sequence>
+      <SubTree ID="AlignTorpFrame"
+               _autoremap="true"/>
+      <SubTree ID="AlignSize"
+               size="0"
+               _autoremap="true"/>
+      <SubTree ID="AlignTorpFrame"
+               _autoremap="true"/>
+      <SubTree ID="AlignSize"
+               size="1"
+               _autoremap="true"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <SubTree ID="AlignSize"
+             editable="true">
+      <input_port name="size"
+                  default="0"/>
+    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -40,6 +85,14 @@
       <input_port name="classification"
                   type="std::string"/>
     </Condition>
+    <Action ID="ExtractAiListItem">
+      <output_port name="aiObject"
+                   type="AiDetection"/>
+      <input_port name="Index"
+                  type="int"/>
+      <input_port name="array"
+                  type="AiDetectionArray"/>
+    </Action>
     <Action ID="GetTorpedoTarget">
       <output_port name="selected_target"
                    type="AiDetection"/>
