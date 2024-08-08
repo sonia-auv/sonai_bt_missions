@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="AlignBuoy">
+    <Sequence>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{buoy_arr}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="buoy"/>
+      </RetryUntilSuccessful>
+      <ExtractAiListItem aiObject="{buoyObj}"
+                         Index="0"
+                         array="{buoy_arr}"/>
+      <SubTree ID="TransAlignYZ"
+               detection_object="{buoyObj}"
+               target_x="300"
+               target_y="200"
+               error_margin="0.05"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="Buoy24">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{buoy}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="buoy"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <SubTree ID="AlignBuoy"/>
+        <SubTree ID="ApprocheTarget"
+                 classification="buoy"
+                 offset="-1"
+                 _autoremap="true"/>
+        <SubTree ID="BuoyCircle"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
+  </BehaviorTree>
+
   <BehaviorTree ID="BuoyCircle">
     <Sequence>
       <InitTraj trajectory="{traj}"/>
@@ -44,25 +87,6 @@
     </Sequence>
   </BehaviorTree>
 
-  <BehaviorTree ID="FindBuoy">
-    <Sequence>
-      <CheckAiInfo max_count="1"
-                   ai_info="{buoy_arr}"
-                   confidence="0.800000"
-                   camera="0"
-                   min_count="1"
-                   classification="buoy"/>
-      <ExtractAiListItem aiObject="{buoyObj}"
-                         Index="0"
-                         array="{buoy_arr}"/>
-      <SubTree ID="TransAlignYZ"
-               detection_object="{buoyObj}"
-               target_x="300"
-               target_y="200"
-               error_margin="0.05"/>
-    </Sequence>
-  </BehaviorTree>
-
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="AddPoseToTraj">
@@ -99,6 +123,12 @@
                   default="0.000000"
                   type="float"/>
     </Action>
+    <SubTree ID="ApprocheTarget"
+             editable="true">
+      <input_port name="classification"/>
+      <input_port name="offset"
+                  default="0"/>
+    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -130,7 +160,7 @@
                    type="Trajectory"/>
     </Action>
     <Action ID="SendTrajToPlanner">
-      <input_port name="trajectory"
+      <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="interpolation"
                   default="0"

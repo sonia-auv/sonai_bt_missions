@@ -7,7 +7,6 @@
     <include path="CoinFlip.xml"/>
     <include path="Gate.xml"/>
     <include path="MoveSinglePose.xml"/>
-    <include path="MoveToTarget.xml"/>
     <include path="Run24.xml"/>
     <include path="Torpedoes.xml"/>
     <include path="TrickShot.xml"/>
@@ -42,6 +41,10 @@
         </SubTree>
         <SubTree ID="AngleAlign" editable="true">
             <input_port name="classification"/>
+        </SubTree>
+        <SubTree ID="ApprocheTarget" editable="true">
+            <input_port name="classification"/>
+            <input_port name="offset" default="0"/>
         </SubTree>
         <Condition ID="CheckAiInfo">
             <input_port name="max_count" default="1" type="int"/>
@@ -87,9 +90,11 @@
         </Action>
         <SubTree ID="FindGate" editable="true">
             <input_port name="classification"/>
+            <output_port name="gate_info"/>
         </SubTree>
         <SubTree ID="ForwardStrafeGateSearch" editable="true">
             <input_port name="classification"/>
+            <output_port name="ai_info"/>
         </SubTree>
         <SubTree ID="GateStrafeSearchPattern" editable="true">
             <input_port name="attempt_num"/>

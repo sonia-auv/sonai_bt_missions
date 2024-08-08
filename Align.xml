@@ -68,6 +68,31 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="ApprocheTarget">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{target_list}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="{classification}"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{target}"
+                           Index="0"
+                           array="{target_list}"/>
+        <InitTraj trajectory="{traj}"/>
+        <MoveToTarget trajectory="{traj}"
+                      offset="{offset}"
+                      aiObj="{target}"/>
+        <SendTrajToPlanner trajectory="{traj}"
+                           interpolation="0"/>
+        <WaitTargetReached timeout="5"/>
+      </Sequence>
+    </IfThenElse>
+  </BehaviorTree>
+
   <BehaviorTree ID="TransAlignXY">
     <Sequence>
       <InitTraj trajectory="{transAlign}"/>
@@ -152,6 +177,14 @@
       <input_port name="detection_object"
                   type="AiDetection"/>
     </Condition>
+    <Action ID="ExtractAiListItem">
+      <output_port name="aiObject"
+                   type="AiDetection"/>
+      <input_port name="Index"
+                  type="int"/>
+      <input_port name="array"
+                  type="AiDetectionArray"/>
+    </Action>
     <Action ID="GetAngle">
       <input_port name="error_margin"
                   default="0.100000"
@@ -184,8 +217,16 @@
       <input_port name="frame"
                   default="1"/>
     </SubTree>
+    <Action ID="MoveToTarget">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="offset"
+                  type="float"/>
+      <input_port name="aiObj"
+                  type="AiDetection"/>
+    </Action>
     <Action ID="SendTrajToPlanner">
-      <input_port name="trajectory"
+      <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="interpolation"
                   default="0"

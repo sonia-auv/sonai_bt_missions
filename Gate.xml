@@ -52,6 +52,8 @@
       <RetryUntilSuccessful num_attempts="3">
         <SubTree ID="FindGate"
                  classification="gate_rouge"
+                 gate_info="{gate_info}"
+                 ai_info=""
                  _autoremap="false"/>
       </RetryUntilSuccessful>
       <Sequence>
@@ -151,10 +153,12 @@
     <SubTree ID="FindGate"
              editable="true">
       <input_port name="classification"/>
+      <output_port name="gate_info"/>
     </SubTree>
     <SubTree ID="ForwardStrafeGateSearch"
              editable="true">
       <input_port name="classification"/>
+      <output_port name="ai_info"/>
     </SubTree>
     <SubTree ID="GateStrafeSearchPattern"
              editable="true">

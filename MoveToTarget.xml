@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="MoveToTarget">
-    <Sequence>
-      <AiActivation activation_target="1"/>
-      <Sleep msec="5000"/>
+  <BehaviorTree ID="MoveToTargetTree">
+    <IfThenElse>
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
-                     ai_info="{buoy}"
+                     ai_info="{target}"
                      confidence="0.800000"
                      camera="0"
                      min_count="1"
-                     classification="buoy"/>
+                     classification="{classification}"/>
       </RetryUntilSuccessful>
-      <InitTraj trajectory="{traj}"/>
-      <MoveToTarget trajectory="{traj}"
-                    offset=""
-                    aiObj="{buoy}"/>
-      <SendTrajToPlanner trajectory="{traj}"
-                         interpolation="0"/>
-      <AlwaysSuccess/>
-    </Sequence>
+      <Sequence>
+        <InitTraj trajectory="{traj}"/>
+        <MoveToTargetTree trajectory="{traj}"
+                          offset="{offset}"
+                          aiObj="{target}"/>
+        <SendTrajToPlanner trajectory="{traj}"
+                           interpolation="0"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <Action ID="AiActivation">
-      <input_port name="activation_target"
-                  default="0"
-                  type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
-    </Action>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -51,7 +46,7 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
-    <Action ID="MoveToTarget">
+    <Action ID="MoveToTargetTree">
       <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="offset"
@@ -60,7 +55,7 @@
                   type="AiDetection"/>
     </Action>
     <Action ID="SendTrajToPlanner">
-      <input_port name="trajectory"
+      <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="interpolation"
                   default="0"
