@@ -14,6 +14,7 @@
       </RetryUntilSuccessful>
       <InitTraj trajectory="{traj}"/>
       <MoveToTarget trajectory="{traj}"
+                    offset=""
                     aiObj="{buoy}"/>
       <SendTrajToPlanner trajectory="{traj}"
                          interpolation="0"/>
@@ -53,6 +54,8 @@
     <Action ID="MoveToTarget">
       <inout_port name="trajectory"
                   type="Trajectory"/>
+      <input_port name="offset"
+                  type="float"/>
       <input_port name="aiObj"
                   type="AiDetection"/>
     </Action>

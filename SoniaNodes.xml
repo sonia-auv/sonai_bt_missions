@@ -70,10 +70,11 @@
         <Condition ID="MissionSwitchStatus"/>
         <Action ID="MoveToTarget">
             <inout_port name="trajectory" type="Trajectory"/>
-            <input_port name="aiObj" type="AiDetectionArray"/>
+            <input_port name="offset" type="float"/>
+            <input_port name="aiObj" type="AiDetection"/>
         </Action>
         <Action ID="SendTrajToPlanner">
-            <input_port name="trajectory" type="Trajectory"/>
+            <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" type="int" default="0"/>
         </Action>
         <Action ID="TareDepth"/>

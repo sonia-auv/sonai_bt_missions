@@ -17,7 +17,6 @@
       <SendTrajToPlanner trajectory="{traj}"
                          interpolation="0"/>
       <WaitTargetReached timeout="10"/>
-      <Script code="traj=&quot;&quot;"/>
     </Sequence>
   </BehaviorTree>
 
@@ -62,7 +61,7 @@
                    type="Trajectory"/>
     </Action>
     <Action ID="SendTrajToPlanner">
-      <input_port name="trajectory"
+      <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="interpolation"
                   default="0"

@@ -37,6 +37,9 @@
         <SubTree ID="AlignSize" editable="true">
             <input_port name="size" default="0"/>
         </SubTree>
+        <SubTree ID="AlignTorpID" editable="true">
+            <input_port name="sizeID" default="0"/>
+        </SubTree>
         <SubTree ID="AngleAlign" editable="true">
             <input_port name="classification"/>
         </SubTree>
@@ -118,16 +121,23 @@
         </SubTree>
         <Action ID="MoveToTarget">
             <inout_port name="trajectory" type="Trajectory"/>
+            <input_port name="offset" type="float"/>
             <input_port name="aiObj" type="AiDetection"/>
         </Action>
         <Action ID="SendTrajToPlanner">
-            <input_port name="trajectory" type="Trajectory"/>
+            <inout_port name="trajectory" type="Trajectory"/>
             <input_port name="interpolation" default="0" type="int"/>
         </Action>
         <SubTree ID="SinglePose" editable="true">
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
         <Action ID="TareDepth"/>
+        <SubTree ID="TransAlign" editable="true">
+            <input_port name="detection_object"/>
+            <input_port name="target_x" default="300"/>
+            <input_port name="target_y" default="200"/>
+            <input_port name="error_margin" default="0.05"/>
+        </SubTree>
         <SubTree ID="TransAlignXY" editable="true">
             <input_port name="detection_object"/>
             <input_port name="target_x" default="300"/>

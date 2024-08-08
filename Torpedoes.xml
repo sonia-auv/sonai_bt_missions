@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="AlignPort">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="3">
+        <CheckAiInfo max_count="1"
+                     ai_info="{torp_target_arr}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="torpille_target"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{torp_target}"
+                           Index="0"
+                           array="{torp_target_arr}"/>
+        <InitTraj trajectory="{torp_traj_port}"/>
+        <ForceSuccess>
+          <CheckTranslationYZAlign error_margin="0.10000"
+                                   target_y="275"
+                                   target_x="225"
+                                   traj="{torp_traj_port}"
+                                   detection_object="{torp_target}"/>
+        </ForceSuccess>
+        <SendTrajToPlanner trajectory="{torp_traj_port}"
+                           interpolation="0"/>
+        <WaitTargetReached timeout="5"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
+  </BehaviorTree>
+
   <BehaviorTree ID="AlignSize">
     <Sequence>
       <CheckAiInfo max_count="4"
@@ -18,6 +48,36 @@
                error_margin="0.10"
                _autoremap="true"/>
     </Sequence>
+  </BehaviorTree>
+
+  <BehaviorTree ID="AlignStar">
+    <IfThenElse>
+      <RetryUntilSuccessful num_attempts="3">
+        <CheckAiInfo max_count="1"
+                     ai_info="{torp_target_arr}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="torpille_target"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{torp_target}"
+                           Index="0"
+                           array="{torp_target_arr}"/>
+        <InitTraj trajectory="{torp_traj_star}"/>
+        <ForceSuccess>
+          <CheckTranslationYZAlign error_margin="0.10000"
+                                   target_y="275"
+                                   target_x="375"
+                                   traj="{torp_traj_star}"
+                                   detection_object="{torp_target}"/>
+        </ForceSuccess>
+        <SendTrajToPlanner trajectory="{torp_traj_star}"
+                           interpolation="0"/>
+        <WaitTargetReached timeout="5"/>
+      </Sequence>
+      <AlwaysFailure/>
+    </IfThenElse>
   </BehaviorTree>
 
   <BehaviorTree ID="AlignTorpFrame">
@@ -45,18 +105,25 @@
     </IfThenElse>
   </BehaviorTree>
 
-  <BehaviorTree ID="TestTorpedoes">
+  <BehaviorTree ID="AlignTorpFrameAngle">
+    <SubTree ID="AngleAlign"
+             classification="torpille"/>
+  </BehaviorTree>
+
+  <BehaviorTree ID="AlignTorpID">
     <Sequence>
-      <SubTree ID="AlignTorpFrame"
-               _autoremap="true"/>
       <SubTree ID="AlignSize"
                size="0"
                _autoremap="true"/>
-      <SubTree ID="AlignTorpFrame"
-               _autoremap="true"/>
-      <SubTree ID="AlignSize"
-               size="1"
-               _autoremap="true"/>
+      <Sequence>
+        <InitTraj trajectory="{torp_traj}"/>
+        <MoveToTarget trajectory="{torp_traj}"
+                      offset="-0.5"
+                      aiObj="{torp_target}"/>
+        <SendTrajToPlanner trajectory="{torp_traj}"
+                           interpolation="0"/>
+        <WaitTargetReached timeout="5"/>
+      </Sequence>
     </Sequence>
   </BehaviorTree>
 
@@ -66,6 +133,10 @@
              editable="true">
       <input_port name="size"
                   default="0"/>
+    </SubTree>
+    <SubTree ID="AngleAlign"
+             editable="true">
+      <input_port name="classification"/>
     </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
@@ -85,6 +156,19 @@
       <input_port name="classification"
                   type="std::string"/>
     </Condition>
+    <Condition ID="CheckTranslationYZAlign">
+      <input_port name="error_margin"
+                  default="0.050000"
+                  type="float">percentage of error off the target (0-1)</input_port>
+      <input_port name="target_y"
+                  type="int"/>
+      <input_port name="target_x"
+                  type="int"/>
+      <inout_port name="traj"
+                  type="Trajectory"/>
+      <input_port name="detection_object"
+                  type="AiDetection"/>
+    </Condition>
     <Action ID="ExtractAiListItem">
       <output_port name="aiObject"
                    type="AiDetection"/>
@@ -101,6 +185,25 @@
       <input_port name="torpedo_objs"
                   type="AiDetectionArray"/>
     </Action>
+    <Action ID="InitTraj">
+      <output_port name="trajectory"
+                   type="Trajectory"/>
+    </Action>
+    <Action ID="MoveToTarget">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="offset"
+                  type="float"/>
+      <input_port name="aiObj"
+                  type="AiDetection"/>
+    </Action>
+    <Action ID="SendTrajToPlanner">
+      <inout_port name="trajectory"
+                  type="Trajectory"/>
+      <input_port name="interpolation"
+                  default="0"
+                  type="int"/>
+    </Action>
     <SubTree ID="TransAlign"
              editable="true">
       <input_port name="detection_object"/>
@@ -111,6 +214,11 @@
       <input_port name="error_margin"
                   default="0.05"/>
     </SubTree>
+    <Action ID="WaitTargetReached">
+      <input_port name="timeout"
+                  default="5"
+                  type="int"/>
+    </Action>
   </TreeNodesModel>
 
 </root>

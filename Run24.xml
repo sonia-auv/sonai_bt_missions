@@ -10,6 +10,7 @@
       <Sequence>
         <InitTraj trajectory="{gate_traj}"/>
         <MoveToTarget trajectory="{gate_traj}"
+                      offset="2"
                       aiObj="{gate_item}"/>
         <SendTrajToPlanner trajectory="{gate_traj}"
                            interpolation="0"/>
@@ -25,14 +26,6 @@
       <SubTree ID="CoinFlip"/>
       <SubTree ID="Gate24"/>
       <SubTree ID="MoveSinglePose"
-               positionX="1"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"
-               frame="1"/>
-      <SubTree ID="MoveSinglePose"
                positionX="0"
                positionY="0.0"
                positionZ="0.8"
@@ -44,13 +37,50 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="Torpedoes24">
+    <Sequence>
+      <SubTree ID="AlignTorpFrame"/>
+      <SubTree ID="AlignTorpFrameAngle"/>
+      <SubTree ID="AlignTorpFrame"/>
+      <SubTree ID="AlignTorpID"
+               sizeID="0"/>
+      <SubTree ID="AlignStar"/>
+      <ActuatorsAction side="starboard"
+                       Actuator="1"/>
+      <SubTree ID="MoveSinglePose"
+               positionX="-1.5"
+               positionY="0.0"
+               positionZ="0.0"
+               orientationX="0.0"
+               orientationY="0.0"
+               orientationZ="0.0"
+               frame="1"/>
+      <SubTree ID="AlignTorpID"
+               sizeID="1"/>
+      <SubTree ID="AlignPort"/>
+      <ActuatorsAction side="port_side"
+                       Actuator="1"/>
+    </Sequence>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <Action ID="ActuatorsAction">
+      <input_port name="side"
+                  type="std::string">port_side or starboard</input_port>
+      <input_port name="Actuator"
+                  type="int">0: Dropper, 1: Torpedo</input_port>
+    </Action>
     <Action ID="AiActivation">
       <input_port name="activation_target"
                   default="0"
                   type="int">0: OFF, 1: FRONT, 2: BOTTOM, 3: BOTH</input_port>
     </Action>
+    <SubTree ID="AlignTorpID"
+             editable="true">
+      <input_port name="sizeID"
+                  default="0"/>
+    </SubTree>
     <Action ID="InitTraj">
       <output_port name="trajectory"
                    type="Trajectory"/>
@@ -75,11 +105,13 @@
     <Action ID="MoveToTarget">
       <inout_port name="trajectory"
                   type="Trajectory"/>
+      <input_port name="offset"
+                  type="float"/>
       <input_port name="aiObj"
                   type="AiDetection"/>
     </Action>
     <Action ID="SendTrajToPlanner">
-      <input_port name="trajectory"
+      <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="interpolation"
                   default="0"
