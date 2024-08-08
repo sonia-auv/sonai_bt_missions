@@ -2,15 +2,17 @@
 <root BTCPP_format="4">
   <BehaviorTree ID="FindGate">
     <Fallback>
-      <CheckAiInfo max_count="1"
-                   ai_info="{gate_info}"
-                   confidence="0.800000"
-                   camera="0"
-                   min_count="1"
-                   classification="{classification}"/>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{gate_info}"
+                     confidence="0.800000"
+                     camera="0"
+                     min_count="1"
+                     classification="{classification}"/>
+      </RetryUntilSuccessful>
       <SubTree ID="ForwardStrafeGateSearch"
-               ai_info="{gate_info}"
                classification="{classification}"
+               ai_info="{gate_info}"
                _autoremap="true"/>
     </Fallback>
   </BehaviorTree>
@@ -152,7 +154,6 @@
     </SubTree>
     <SubTree ID="ForwardStrafeGateSearch"
              editable="true">
-      <input_port name="ai_info"/>
       <input_port name="classification"/>
     </SubTree>
     <SubTree ID="GateStrafeSearchPattern"

@@ -16,7 +16,7 @@
     <TreeNodesModel>
         <Action ID="ActuatorsAction">
             <input_port name="side" type="std::string">port_side or starboard</input_port>
-            <input_port name="Actuator" type="int">0: Dropper, 1: Torpedo</input_port>
+            <input_port name="actuator" type="int">0: Dropper, 1: Torpedo</input_port>
         </Action>
         <Action ID="AddPoseToTraj">
             <inout_port name="trajectory" type="Trajectory"/>
@@ -89,7 +89,6 @@
             <input_port name="classification"/>
         </SubTree>
         <SubTree ID="ForwardStrafeGateSearch" editable="true">
-            <input_port name="ai_info"/>
             <input_port name="classification"/>
         </SubTree>
         <SubTree ID="GateStrafeSearchPattern" editable="true">

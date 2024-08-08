@@ -11,15 +11,6 @@
                orientationZ="0.0"
                frame="2"
                _autoremap="true"/>
-      <SubTree ID="MoveSinglePose"
-               positionX="1"
-               positionY="0.0"
-               positionZ="0.0"
-               orientationX="0.0"
-               orientationY="0.0"
-               orientationZ="0.0"
-               frame="1"
-               _autoremap="true"/>
     </Sequence>
   </BehaviorTree>
 
