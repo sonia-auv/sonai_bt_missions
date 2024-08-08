@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
-  <BehaviorTree ID="MoveToTargetTree">
+  <BehaviorTree ID="MoveToTarget">
     <IfThenElse>
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
@@ -12,7 +12,7 @@
       </RetryUntilSuccessful>
       <Sequence>
         <InitTraj trajectory="{traj}"/>
-        <MoveToTargetTree trajectory="{traj}"
+        <MoveToTarget trajectory="{traj}"
                           offset="{offset}"
                           aiObj="{target}"/>
         <SendTrajToPlanner trajectory="{traj}"
@@ -46,7 +46,7 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
-    <Action ID="MoveToTargetTree">
+    <Action ID="MoveToTarget">
       <inout_port name="trajectory"
                   type="Trajectory"/>
       <input_port name="offset"

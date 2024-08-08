@@ -3,9 +3,6 @@
   <BehaviorTree ID="Gate24">
     <Sequence>
       <AiActivation activation_target="1"/>
-      <SubTree ID="GateAlignTrans"
-               _autoremap="true"/>
-      <SubTree ID="GateAlignAngle"/>
       <SubTree ID="GateAlignTrans"/>
       <Sequence>
         <InitTraj trajectory="{gate_traj}"/>
@@ -22,6 +19,7 @@
 
   <BehaviorTree ID="Run24">
     <Sequence>
+      <SubTree ID="enable_mission"/>
       <SubTree ID="CoinFlip"/>
       <SubTree ID="Gate24"/>
       <SubTree ID="MoveSinglePose"

@@ -35,7 +35,7 @@
         <SubTree ID="AlignBuoy"/>
         <SubTree ID="ApprocheTarget"
                  classification="buoy"
-                 offset="-1"
+                 offset="-0.5"
                  _autoremap="true"/>
         <SubTree ID="BuoyCircle"/>
       </Sequence>
