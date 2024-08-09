@@ -158,6 +158,10 @@
             <input_port name="classification"/>
             <input_port name="confidence"/>
         </SubTree>
+        <SubTree ID="StepApproachUntilSuccess" editable="true">
+            <input_port name="classification"/>
+            <input_port name="confidence" default="0.8"/>
+        </SubTree>
         <Action ID="TareDepth"/>
         <SubTree ID="TransAlign" editable="true">
             <input_port name="detection_object"/>
