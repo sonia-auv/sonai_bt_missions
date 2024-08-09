@@ -68,10 +68,11 @@
             <input_port name="detection_object" type="AiDetection"/>
         </Condition>
         <Condition ID="CheckTranslationXYAlign">
+            <inout_port name="traj" type="Trajectory"/>
             <input_port name="error_margin" default="0.050000" type="float">percentage of error off the target (0-1)</input_port>
             <input_port name="target_y" type="int"/>
             <input_port name="target_x" type="int"/>
-            <inout_port name="traj" type="Trajectory"/>
+            <input_port name="distance" type="float"/>
             <input_port name="detection_object" type="AiDetection"/>
         </Condition>
         <Condition ID="CheckTranslationYZAlign">
@@ -163,6 +164,7 @@
             <input_port name="target_x" default="300"/>
             <input_port name="target_y" default="200"/>
             <input_port name="error_margin" default="0.05"/>
+            <input_port name="distance"/>
         </SubTree>
         <SubTree ID="TransAlignYZ" editable="true">
             <input_port name="detection_object"/>

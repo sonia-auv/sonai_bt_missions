@@ -18,14 +18,42 @@
                  detection_object="{bin_item}"
                  target_x="300"
                  target_y="200"
-                 error_margin="0.05"/>
+                 error_margin="0.05"
+                 distance="1.2"/>
       </Sequence>
       <AlwaysFailure/>
     </IfThenElse>
   </BehaviorTree>
 
+  <BehaviorTree ID="FindBins">
+    <IfThenElse>
+      <SubTree ID="RotatingSearch"
+               classification="bin_rouge"
+               ai_info="{bin_obj_arr}"/>
+      <Sequence>
+        <ExtractAiListItem aiObject="{bin_obj}"
+                           Index="0"
+                           array="{bin_obj_arr}"/>
+        <SubTree ID="TransAlignYZ"
+                 detection_object="{bin_obj}"
+                 target_x="300"
+                 target_y="-1"
+                 error_margin="0.05"/>
+        <SubTree ID="ApprocheTarget"
+                 classification="{bin_obj}"
+                 offset="0"/>
+      </Sequence>
+    </IfThenElse>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
+    <SubTree ID="ApprocheTarget"
+             editable="true">
+      <input_port name="classification"/>
+      <input_port name="offset"
+                  default="0"/>
+    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -52,7 +80,23 @@
       <input_port name="array"
                   type="AiDetectionArray"/>
     </Action>
+    <SubTree ID="RotatingSearch"
+             editable="true">
+      <input_port name="classification"/>
+      <output_port name="ai_info"/>
+    </SubTree>
     <SubTree ID="TransAlignXY"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="target_y"
+                  default="200"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+      <input_port name="distance"/>
+    </SubTree>
+    <SubTree ID="TransAlignYZ"
              editable="true">
       <input_port name="detection_object"/>
       <input_port name="target_x"
