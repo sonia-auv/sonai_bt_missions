@@ -18,6 +18,11 @@
                target_x="300"
                error_margin="0.1"
                _autoremap="true"/>
+      <SubTree ID="RotAlignZ"
+               detection_object="{buoyObj}"
+               target_x="300"
+               error_margin="0.1"
+               _autoremap="true"/>
       <SubTree ID="ApprocheTarget"
                classification="buoy"
                offset="-0.5"
