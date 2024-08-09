@@ -110,6 +110,39 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="StepApproachUntilLoss">
+    <WhileDoElse>
+      <RetryUntilSuccessful num_attempts="5">
+        <CheckAiInfo max_count="1"
+                     ai_info="{step_obj_arr}"
+                     confidence="{confidence}"
+                     camera="0"
+                     min_count="1"
+                     classification="{classification}"/>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <ExtractAiListItem aiObject="{step_obj}"
+                           Index="0"
+                           array="{step_obj_arr}"/>
+        <SubTree ID="RotAlignZ"
+                 detection_object="{step_obj}"
+                 target_x="300"
+                 error_margin="0.05"
+                 _autoremap="true"/>
+        <SubTree ID="MoveSinglePose"
+                 positionX="1"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="0.0"
+                 frame="1"
+                 _autoremap="true"/>
+      </Sequence>
+      <AlwaysSuccess/>
+    </WhileDoElse>
+  </BehaviorTree>
+
   <BehaviorTree ID="TransAlignXY">
     <Sequence>
       <InitTraj trajectory="{transAlign}"/>
@@ -255,6 +288,14 @@
       <input_port name="aiObj"
                   type="AiDetection"/>
     </Action>
+    <SubTree ID="RotAlignZ"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+    </SubTree>
     <Action ID="SendTrajToPlanner">
       <inout_port name="trajectory"
                   type="Trajectory"/>
