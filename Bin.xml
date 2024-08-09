@@ -36,11 +36,10 @@
         <ExtractAiListItem aiObject="{bin_obj}"
                            Index="0"
                            array="{bin_obj_arr}"/>
-        <SubTree ID="TransAlignYZ"
+        <SubTree ID="RotAlignZ"
                  detection_object="{bin_obj}"
                  target_x="300"
-                 target_y="-1"
-                 error_margin="0.05"/>
+                 error_margin="0.1"/>
         <SubTree ID="ApprocheTarget"
                  classification="{bin_obj}"
                  offset="0"
@@ -85,6 +84,14 @@
       <input_port name="array"
                   type="AiDetectionArray"/>
     </Action>
+    <SubTree ID="RotAlignZ"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+    </SubTree>
     <SubTree ID="RotatingSearch"
              editable="true">
       <input_port name="classification"/>
@@ -102,16 +109,6 @@
       <input_port name="error_margin"
                   default="0.05"/>
       <input_port name="dist"/>
-    </SubTree>
-    <SubTree ID="TransAlignYZ"
-             editable="true">
-      <input_port name="detection_object"/>
-      <input_port name="target_x"
-                  default="300"/>
-      <input_port name="target_y"
-                  default="200"/>
-      <input_port name="error_margin"
-                  default="0.05"/>
     </SubTree>
   </TreeNodesModel>
 
