@@ -13,34 +13,11 @@
       <ExtractAiListItem aiObject="{buoyObj}"
                          Index="0"
                          array="{buoy_arr}"/>
-      <SubTree ID="TransAlignYZ"
+      <SubTree ID="RotAlignZ"
                detection_object="{buoyObj}"
                target_x="300"
-               target_y="200"
                error_margin="0.05"/>
     </Sequence>
-  </BehaviorTree>
-
-  <BehaviorTree ID="Buoy24">
-    <IfThenElse>
-      <RetryUntilSuccessful num_attempts="5">
-        <CheckAiInfo max_count="1"
-                     ai_info="{buoy}"
-                     confidence="0.800000"
-                     camera="0"
-                     min_count="1"
-                     classification="buoy"/>
-      </RetryUntilSuccessful>
-      <Sequence>
-        <SubTree ID="AlignBuoy"/>
-        <SubTree ID="ApprocheTarget"
-                 classification="buoy"
-                 offset="-0.5"
-                 _autoremap="true"/>
-        <SubTree ID="BuoyCircle"/>
-      </Sequence>
-      <AlwaysFailure/>
-    </IfThenElse>
   </BehaviorTree>
 
   <BehaviorTree ID="BuoyCircle">
@@ -123,12 +100,6 @@
                   default="0.000000"
                   type="float"/>
     </Action>
-    <SubTree ID="ApprocheTarget"
-             editable="true">
-      <input_port name="classification"/>
-      <input_port name="offset"
-                  default="0"/>
-    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
@@ -159,6 +130,14 @@
       <output_port name="trajectory"
                    type="Trajectory"/>
     </Action>
+    <SubTree ID="RotAlignZ"
+             editable="true">
+      <input_port name="detection_object"/>
+      <input_port name="target_x"
+                  default="300"/>
+      <input_port name="error_margin"
+                  default="0.05"/>
+    </SubTree>
     <Action ID="SendTrajToPlanner">
       <inout_port name="trajectory"
                   type="Trajectory"/>
@@ -166,16 +145,6 @@
                   default="0"
                   type="int"/>
     </Action>
-    <SubTree ID="TransAlignYZ"
-             editable="true">
-      <input_port name="detection_object"/>
-      <input_port name="target_x"
-                  default="300"/>
-      <input_port name="target_y"
-                  default="200"/>
-      <input_port name="error_margin"
-                  default="0.05"/>
-    </SubTree>
     <Action ID="WaitTargetReached">
       <input_port name="timeout"
                   default="5"

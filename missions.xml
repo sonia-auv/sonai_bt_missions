@@ -34,6 +34,10 @@
     </Sequence>
   </BehaviorTree>
 
+  <BehaviorTree ID="test_mission">
+    <AlwaysSuccess/>
+  </BehaviorTree>
+
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
     <Action ID="ActuatorsAction">

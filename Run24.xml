@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root BTCPP_format="4">
+  <BehaviorTree ID="Buoy24">
+    <Sequence>
+      <Fallback>
+        <RetryUntilSuccessful num_attempts="5">
+          <CheckAiInfo max_count="1"
+                       ai_info="{buoy}"
+                       confidence="0.800000"
+                       camera="0"
+                       min_count="1"
+                       classification="buoy"/>
+        </RetryUntilSuccessful>
+        <SubTree ID="RotatingSearch"
+                 classification="buoy"
+                 ai_info="{buoy}"/>
+      </Fallback>
+      <Sequence>
+        <SubTree ID="AlignBuoy"/>
+        <SubTree ID="ApprocheTarget"
+                 classification="buoy"
+                 offset="-0.5"
+                 _autoremap="true"/>
+        <SubTree ID="BuoyCircle"/>
+      </Sequence>
+    </Sequence>
+  </BehaviorTree>
+
   <BehaviorTree ID="Gate24">
     <Sequence>
       <AiActivation activation_target="1"/>
       <SubTree ID="GateAlignTrans"/>
-      <Sequence>
-        <InitTraj trajectory="{gate_traj}"/>
-        <MoveToTarget trajectory="{gate_traj}"
-                      offset="2"
-                      aiObj="{gate_item}"/>
-        <SendTrajToPlanner trajectory="{gate_traj}"
-                           interpolation="0"/>
-        <WaitTargetReached timeout="5"/>
-      </Sequence>
-      <AiActivation activation_target="0"/>
+      <SubTree ID="ApprocheTarget"
+               classification="gate_rouge"
+               offset="2"/>
     </Sequence>
   </BehaviorTree>
 
   <BehaviorTree ID="Run24">
     <Sequence>
-      <SubTree ID="enable_mission"/>
       <SubTree ID="CoinFlip"/>
-      <SubTree ID="Gate24"/>
+      <SubTree ID="Gate24"
+               _autoremap="false"/>
       <SubTree ID="MoveSinglePose"
                positionX="0"
                positionY="0.0"
@@ -31,6 +50,7 @@
                orientationZ="0.0"
                frame="4"/>
       <SubTree ID="TrickShotSingle"/>
+      <SubTree ID="Buoy24"/>
     </Sequence>
   </BehaviorTree>
 
@@ -68,10 +88,30 @@
       <input_port name="sizeID"
                   default="0"/>
     </SubTree>
-    <Action ID="InitTraj">
-      <output_port name="trajectory"
-                   type="Trajectory"/>
-    </Action>
+    <SubTree ID="ApprocheTarget"
+             editable="true">
+      <input_port name="classification"/>
+      <input_port name="offset"
+                  default="0"/>
+    </SubTree>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
     <SubTree ID="MoveSinglePose"
              editable="true">
       <input_port name="positionX"
@@ -89,26 +129,11 @@
       <input_port name="frame"
                   default="1"/>
     </SubTree>
-    <Action ID="MoveToTarget">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="offset"
-                  type="float"/>
-      <input_port name="aiObj"
-                  type="AiDetection"/>
-    </Action>
-    <Action ID="SendTrajToPlanner">
-      <inout_port name="trajectory"
-                  type="Trajectory"/>
-      <input_port name="interpolation"
-                  default="0"
-                  type="int"/>
-    </Action>
-    <Action ID="WaitTargetReached">
-      <input_port name="timeout"
-                  default="5"
-                  type="int"/>
-    </Action>
+    <SubTree ID="RotatingSearch"
+             editable="true">
+      <input_port name="classification"/>
+      <output_port name="ai_info"/>
+    </SubTree>
   </TreeNodesModel>
 
 </root>

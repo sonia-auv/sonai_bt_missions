@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="RotatingSearch">
+    <Fallback>
+      <RetryUntilSuccessful num_attempts="2">
+        <Sequence>
+          <SubTree ID="MoveSinglePose"
+                   positionX="0.0"
+                   positionY="0.0"
+                   positionZ="0.0"
+                   orientationX="0.0"
+                   orientationY="0.0"
+                   orientationZ="20"
+                   frame="1"
+                   _autoremap="true"/>
+          <RetryUntilSuccessful num_attempts="3">
+            <CheckAiInfo max_count="1"
+                         ai_info="{ai_info}"
+                         confidence="0.800000"
+                         camera="0"
+                         min_count="1"
+                         classification="{classification}"/>
+          </RetryUntilSuccessful>
+        </Sequence>
+      </RetryUntilSuccessful>
+      <Sequence>
+        <SubTree ID="MoveSinglePose"
+                 positionX="0.0"
+                 positionY="0.0"
+                 positionZ="0.0"
+                 orientationX="0.0"
+                 orientationY="0.0"
+                 orientationZ="-40"
+                 frame="1"
+                 _autoremap="true"/>
+        <Fallback>
+          <RetryUntilSuccessful num_attempts="2">
+            <Sequence>
+              <SubTree ID="MoveSinglePose"
+                       positionX="0.0"
+                       positionY="0.0"
+                       positionZ="0.0"
+                       orientationX="0.0"
+                       orientationY="0.0"
+                       orientationZ="-20"
+                       frame="1"
+                       _autoremap="true"/>
+              <RetryUntilSuccessful num_attempts="3">
+                <CheckAiInfo max_count="1"
+                             ai_info="{ai_info}"
+                             confidence="0.800000"
+                             camera="0"
+                             min_count="1"
+                             classification="{classification}"/>
+              </RetryUntilSuccessful>
+            </Sequence>
+          </RetryUntilSuccessful>
+          <ForceFailure>
+            <SubTree ID="MoveSinglePose"
+                     positionX="0.0"
+                     positionY="0.0"
+                     positionZ="0.0"
+                     orientationX="0.0"
+                     orientationY="0.0"
+                     orientationZ="40"
+                     frame="1"
+                     _autoremap="true"/>
+          </ForceFailure>
+        </Fallback>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="CheckAiInfo">
+      <input_port name="max_count"
+                  default="1"
+                  type="int"/>
+      <output_port name="ai_info"
+                   type="AiDetectionArray"/>
+      <input_port name="confidence"
+                  default="0.800000"
+                  type="float"/>
+      <input_port name="camera"
+                  default="0"
+                  type="int">0: Front, 1: Bottom</input_port>
+      <input_port name="min_count"
+                  default="1"
+                  type="int"/>
+      <input_port name="classification"
+                  type="std::string"/>
+    </Condition>
+    <SubTree ID="MoveSinglePose"
+             editable="true">
+      <input_port name="positionX"
+                  default="0.0"/>
+      <input_port name="positionY"
+                  default="0.0"/>
+      <input_port name="positionZ"
+                  default="0.0"/>
+      <input_port name="orientationX"
+                  default="0.0"/>
+      <input_port name="orientationY"
+                  default="0.0"/>
+      <input_port name="orientationZ"
+                  default="0.0"/>
+      <input_port name="frame"
+                  default="1"/>
+    </SubTree>
+  </TreeNodesModel>
+
+</root>
