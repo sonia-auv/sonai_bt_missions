@@ -16,7 +16,7 @@
           <RetryUntilSuccessful num_attempts="3">
             <CheckAiInfo max_count="1"
                          ai_info="{ai_info}"
-                         confidence="0.800000"
+                         confidence="{confidence}"
                          camera="0"
                          min_count="1"
                          classification="{classification}"/>
@@ -48,7 +48,7 @@
               <RetryUntilSuccessful num_attempts="3">
                 <CheckAiInfo max_count="1"
                              ai_info="{ai_info}"
-                             confidence="0.800000"
+                             confidence="{confidence}"
                              camera="0"
                              min_count="1"
                              classification="{classification}"/>

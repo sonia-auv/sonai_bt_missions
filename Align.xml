@@ -73,7 +73,7 @@
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
                      ai_info="{target_list}"
-                     confidence="0.800000"
+                     confidence="{confidence}"
                      camera="0"
                      min_count="1"
                      classification="{classification}"/>
@@ -118,7 +118,7 @@
                                  error_margin="{error_margin}"
                                  target_y="{target_y}"
                                  target_x="{target_x}"
-                                 distance="{distance}"
+                                 distance="{dist}"
                                  detection_object="{detection_object}"/>
         <Sequence>
           <SendTrajToPlanner trajectory="{transAlign}"

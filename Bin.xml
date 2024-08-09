@@ -5,7 +5,7 @@
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
                      ai_info="{aiObj}"
-                     confidence="0.800000"
+                     confidence="0.500000"
                      camera="1"
                      min_count="1"
                      classification="bin_rouge"/>
@@ -18,8 +18,9 @@
                  detection_object="{bin_item}"
                  target_x="300"
                  target_y="200"
-                 error_margin="0.05"
-                 distance="1.2"/>
+                 error_margin="0.1"
+                 dist="1.5"
+                 _autoremap="true"/>
       </Sequence>
       <AlwaysFailure/>
     </IfThenElse>
@@ -29,7 +30,8 @@
     <IfThenElse>
       <SubTree ID="RotatingSearch"
                classification="bin_rouge"
-               ai_info="{bin_obj_arr}"/>
+               ai_info="{bin_obj_arr}"
+               confidence="0.5"/>
       <Sequence>
         <ExtractAiListItem aiObject="{bin_obj}"
                            Index="0"
@@ -41,7 +43,8 @@
                  error_margin="0.05"/>
         <SubTree ID="ApprocheTarget"
                  classification="{bin_obj}"
-                 offset="0"/>
+                 offset="0"
+                 confidence="0.5"/>
       </Sequence>
     </IfThenElse>
   </BehaviorTree>
@@ -53,6 +56,8 @@
       <input_port name="classification"/>
       <input_port name="offset"
                   default="0"/>
+      <input_port name="confidence"
+                  default="0.8"/>
     </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
@@ -84,6 +89,8 @@
              editable="true">
       <input_port name="classification"/>
       <output_port name="ai_info"/>
+      <input_port name="confidence"
+                  default="0.8"/>
     </SubTree>
     <SubTree ID="TransAlignXY"
              editable="true">
@@ -94,7 +101,7 @@
                   default="200"/>
       <input_port name="error_margin"
                   default="0.05"/>
-      <input_port name="distance"/>
+      <input_port name="dist"/>
     </SubTree>
     <SubTree ID="TransAlignYZ"
              editable="true">

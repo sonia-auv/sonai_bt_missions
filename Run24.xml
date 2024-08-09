@@ -6,20 +6,22 @@
         <RetryUntilSuccessful num_attempts="5">
           <CheckAiInfo max_count="1"
                        ai_info="{buoy}"
-                       confidence="0.800000"
+                       confidence="0.6"
                        camera="0"
                        min_count="1"
                        classification="buoy"/>
         </RetryUntilSuccessful>
         <SubTree ID="RotatingSearch"
                  classification="buoy"
-                 ai_info="{buoy}"/>
+                 ai_info="{buoy}"
+                 confidence="0.6"/>
       </Fallback>
       <Sequence>
         <SubTree ID="AlignBuoy"/>
         <SubTree ID="ApprocheTarget"
                  classification="buoy"
                  offset="-0.5"
+                 confidence="0.6"
                  _autoremap="true"/>
         <SubTree ID="BuoyCircle"/>
       </Sequence>
@@ -32,7 +34,8 @@
       <SubTree ID="GateAlignTrans"/>
       <SubTree ID="ApprocheTarget"
                classification="gate_rouge"
-               offset="2"/>
+               offset="2"
+               confidence="0.8"/>
     </Sequence>
   </BehaviorTree>
 
@@ -94,6 +97,8 @@
       <input_port name="classification"/>
       <input_port name="offset"
                   default="0"/>
+      <input_port name="confidence"
+                  default="0.8"/>
     </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
@@ -134,6 +139,8 @@
              editable="true">
       <input_port name="classification"/>
       <output_port name="ai_info"/>
+      <input_port name="confidence"
+                  default="0.8"/>
     </SubTree>
   </TreeNodesModel>
 

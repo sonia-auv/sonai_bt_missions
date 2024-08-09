@@ -5,7 +5,7 @@
       <RetryUntilSuccessful num_attempts="5">
         <CheckAiInfo max_count="1"
                      ai_info="{buoy_arr}"
-                     confidence="0.800000"
+                     confidence="0.600000"
                      camera="0"
                      min_count="1"
                      classification="buoy"/>
@@ -16,7 +16,13 @@
       <SubTree ID="RotAlignZ"
                detection_object="{buoyObj}"
                target_x="300"
-               error_margin="0.05"/>
+               error_margin="0.1"
+               _autoremap="true"/>
+      <SubTree ID="ApprocheTarget"
+               classification="buoy"
+               offset="-0.5"
+               confidence="0.6"
+               _autoremap="true"/>
     </Sequence>
   </BehaviorTree>
 
@@ -100,6 +106,14 @@
                   default="0.000000"
                   type="float"/>
     </Action>
+    <SubTree ID="ApprocheTarget"
+             editable="true">
+      <input_port name="classification"/>
+      <input_port name="offset"
+                  default="0"/>
+      <input_port name="confidence"
+                  default="0.8"/>
+    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
