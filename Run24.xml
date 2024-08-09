@@ -38,6 +38,7 @@
 
   <BehaviorTree ID="Run24">
     <Sequence>
+      <SubTree ID="enable_mission"/>
       <SubTree ID="CoinFlip"/>
       <SubTree ID="Gate24"
                _autoremap="false"/>
