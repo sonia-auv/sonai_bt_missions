@@ -29,7 +29,7 @@
   <BehaviorTree ID="FindBins">
     <IfThenElse>
       <SubTree ID="RotatingSearch"
-               classification="bin_rouge"
+               classification="bin"
                ai_info="{bin_obj_arr}"
                confidence="0.5"/>
       <Sequence>
@@ -41,7 +41,7 @@
                  target_x="300"
                  error_margin="0.1"/>
         <SubTree ID="ApprocheTarget"
-                 classification="{bin_obj}"
+                 classification="bin"
                  offset="0"
                  confidence="0.5"/>
       </Sequence>
