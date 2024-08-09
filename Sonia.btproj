@@ -154,6 +154,10 @@
         <SubTree ID="SinglePose" editable="true">
             <input_port name="positionX" default="{single_xpos}"/>
         </SubTree>
+        <SubTree ID="StepApproachUntilLoss" editable="true">
+            <input_port name="classification"/>
+            <input_port name="confidence"/>
+        </SubTree>
         <Action ID="TareDepth"/>
         <SubTree ID="TransAlign" editable="true">
             <input_port name="detection_object"/>

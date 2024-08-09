@@ -29,9 +29,10 @@
   <BehaviorTree ID="FindBins">
     <IfThenElse>
       <SubTree ID="RotatingSearch"
-               classification="bin_rouge"
+               classification="{bin_type}"
                ai_info="{bin_obj_arr}"
-               confidence="0.5"/>
+               confidence="0.5"
+               _autoremap="true"/>
       <Sequence>
         <ExtractAiListItem aiObject="{bin_obj}"
                            Index="0"
@@ -39,25 +40,14 @@
         <SubTree ID="RotAlignZ"
                  detection_object="{bin_obj}"
                  target_x="300"
-                 error_margin="0.1"/>
-        <SubTree ID="ApprocheTarget"
-                 classification="{bin_obj}"
-                 offset="0"
-                 confidence="0.5"/>
+                 error_margin="0.1"
+                 _autoremap="true"/>
       </Sequence>
     </IfThenElse>
   </BehaviorTree>
 
   <!-- Description of Node Models (used by Groot) -->
   <TreeNodesModel>
-    <SubTree ID="ApprocheTarget"
-             editable="true">
-      <input_port name="classification"/>
-      <input_port name="offset"
-                  default="0"/>
-      <input_port name="confidence"
-                  default="0.8"/>
-    </SubTree>
     <Condition ID="CheckAiInfo">
       <input_port name="max_count"
                   default="1"
